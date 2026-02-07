@@ -1,290 +1,206 @@
-\# RavenStack: Synthetic SaaS Dataset (Multi-Table)
+# 📊 SaaS Churn, Unit Economics & Customer Segmentation Dashboard
+
+**Project: RavenStack (Synthetic SaaS Dataset)**
+
+---
+
+## Project Background
+
+This project focuses on analyzing **customer churn behavior, unit economics (LTV/CAC), and customer segmentation** for a B2B SaaS product named **RavenStack**, an AI-driven team productivity platform.
+
+The objective of the analysis is to understand:
+
+* why customers churn,
+* which acquisition channels and customer segments are high risk,
+* how unit economics have evolved over time,
+* and how customer value differs across regions, plans, and industries.
+
+The dataset used in this project is **fully synthetic but statistically realistic**, generated to simulate real-world SaaS business behavior. It captures the complete customer lifecycle, including signups, subscriptions, feature usage, support interactions, upgrades/downgrades, and churn events.
+
+SaaS businesses typically struggle with:
+
+* identifying churn drivers early,
+* evaluating acquisition channel quality,
+* balancing growth with sustainable unit economics.
+
+This project demonstrates how data analytics can address these challenges using **structured analysis and predictive modeling**.
+
+---
+
+## Dataset Overview
+
+The dataset represents a multi-table SaaS environment with referential integrity:
+
+* **Accounts**: customer demographics, plan at signup, churn flag
+* **Subscriptions**: billing details, plan tier, MRR, auto-renew status
+* **Feature Usage**: granular product engagement metrics
+* **Support Tickets**: customer support load and satisfaction
+* **Churn Events**: churn dates and reason codes
+
+All data is synthetic and created for analytical demonstration purposes only.
+
+---
+
+## Key Areas of Analysis
+
+Insights and observations are developed across the following areas:
+
+1. **Churn Trend Analysis**
+2. **Churn Probability by Customer Segment**
+3. **Churn Reason Distribution**
+4. **Unit Economics (LTV/CAC)**
+5. **Plan Mix & Revenue Drivers**
+6. **Customer Segmentation using Clustering**
+7. **Predictive Churn Modeling**
+
+---
+
+## Executive Summary
+
+### Overview of Findings
+
+* Monthly churn shows a **clear upward trend**, indicating increasing customer attrition as the product scales.
+* Churn probability is **significantly higher** for customers acquired via **partner, organic, and event-based channels**, compared to paid ads.
+* **Basic plan customers** show consistently higher churn risk than Pro and Enterprise users.
+* Customers with **low product usage and high support dependency** are the most likely to churn.
+* Unit economics reveal that **LTV/CAC ratios have declined over time**, approaching break-even levels in later months.
+* Enterprise and Pro plans contribute disproportionately to LTV despite representing a smaller share of total accounts.
+* Customer clustering reveals four distinct personas with clearly different value and churn characteristics.
+
+---
+
+## Churn Trend Analysis
+<img width="437" height="387" alt="Screenshot 2026-02-07 at 2 41 45 PM" src="https://github.com/user-attachments/assets/bbc5a3c6-90c9-4b3c-9ccd-983f97138ee7" />
 
 
+Monthly churn counts increase steadily over time, with sharper rises observed in later periods.
 
-\*\*Author:\*\* River @ Rivalytics  
+<img width="1436" height="764" alt="Screenshot 2026-02-07 at 4 16 43 PM" src="https://github.com/user-attachments/assets/ead76dab-ba9d-436d-9922-b1bce1fd0eb5" />
+this might be primarily due to increase in  pricing seen in later months leading customers to churn 
 
-\*\*Credit Requirement:\*\* You may use or remix this dataset for educational or portfolio purposes, but please credit the original author.  
+---
 
-\*\*Blog:\*\* \[Building a Dataset Generator App Journey](https://rivalytics.medium.com)  
+## Churn Probability Analysis
 
-\*\*License:\*\* MIT-like (fully synthetic, no PII)  
+Using a supervised machine learning model (Logistic Regression with class balancing), churn probabilities were predicted at the **customer level** and then aggregated across key dimensions.
 
-\*\*Refresh Interval:\*\* Monthly  
+### Churn Probability by Referral Source
 
-\*\*Complexity:\*\* Capstone-level (multi-table, event-driven, time-sensitive)  
+* **Partner and Organic channels** exhibit the highest average churn probability.
+* **Paid Ads** show comparatively lower churn risk, indicating higher acquisition quality.
 
-\*\*Data Format:\*\* CSV  
+### Churn Probability by Country
 
-\*\*Row Volume:\*\*
+* Churn risk varies meaningfully across regions.
+* Certain countries show consistently higher churn probabilities, highlighting the need for localized retention strategies.
 
-\- accounts – 500
+### Churn Probability by Industry
 
-\- subscriptions – 5,000
-
-\- feature\_usage – 25,000
-
-\- support\_tickets – 2,000
-
-\- churn\_events – 600
-
-
+* Industries with complex workflows and higher collaboration needs (e.g., DevTools, FinTech) show lower churn.
+* More price-sensitive industries exhibit higher churn risk.
 
 ---
 
 
 
-\## Scenario
+## Unit Economics (LTV / CAC)
 
+### LTV/CAC Ratio Over Time
+<img width="446" height="367" alt="Screenshot 2026-02-07 at 4 34 48 PM" src="https://github.com/user-attachments/assets/0fe67fba-3c06-485c-921f-e4bfd5fcf1ef" />
 
+* Early cohorts show healthy LTV/CAC ratios.
+* Ratios decline over time, approaching the break-even threshold.
+* This trend suggests rising acquisition costs and/or declining lifetime value.
 
-You're investigating RavenStack, a stealth-mode SaaS startup delivering AI-driven team tools. The product was secretly piloted with coding bootcamp graduates, and every sign-up, feature use, support ticket, and churn was captured. Now, you're tasked with discovering what drove conversions, support load, and churn patterns before their public launch.
+### Plan Mix Distribution
 
+* We can see that number of pro customers increase towards the end of the year.
+* however since we can see that the churn still increases towards the end of the year and we may need to look into that.
 
+### Average LTV Analysis
 
----
-
-
-
-\## How This Dataset Was Generated
-
-
-
-\- Scripted in Python using pandas, numpy, and uuid
-
-\- Temporal logic: Validated date ranges (e.g., signup ≤ subscription ≤ churn)
-
-\- Statistical realism: Exponential and Poisson distributions for seats, usage, and durations
-
-\- Primary \& foreign keys: All tables link properly; no orphans
-
-\- Edge cases: Mid-cycle plan changes, null fields, reactivations, duplicate referrals, beta feature spikes
-
-\- Nulls included: Satisfaction scores, feature usage, churn feedback
-
-\- Fully synthetic: All names, domains, feedback, and data are generated
-
-
+* LTV varies significantly by country and industry.
+* Certain regions deliver higher revenue per customer despite lower volumes.
 
 ---
 
+## Customer Segmentation Analysis
+<img width="1281" height="527" alt="Screenshot 2026-02-07 at 5 41 38 PM" src="https://github.com/user-attachments/assets/b46f5fbd-e24a-4c5b-b444-10ce31a37af7" />
 
+Using K-Means clustering, customers were segmented based on:
 
-\## Table Relationships
+* MRR
+* Seat count
+* Product usage
+* Support ticket volume
 
+### Identified Customer Segments
 
+1. **High Value – Power Users**
 
-accounts (PK: account\_id)
+   * High usage, high MRR, low churn risk
 
-│
+2. **Low Value – High Support**
 
-├── subscriptions (FK → accounts.account\_id)
+   * High support dependency, elevated churn risk
 
-│ └── feature\_usage (FK → subscriptions.subscription\_id)
+3. **Low Value – Low Usage**
 
-│
+   * Poor engagement, highest churn risk
 
-├── support\_tickets (FK → accounts.account\_id)
+4. **Mid Value – Growing Accounts**
 
-└── churn\_events (FK → accounts.account\_id)
+   * Moderate usage and revenue, strong upsell potential
 
-
-
-pgsql
-
-Copy
-
-Edit
-
-
-
-All account\_id and subscription\_id links are referentially complete.
-
-
+Segment distribution varies significantly by country, industry, and plan tier.
 
 ---
 
+## Business Recommendations
 
+### 1️⃣ Improve Low-Usage Customer Activation
 
-\## Table Schemas
+* Target onboarding and in-app guidance for low-usage accounts.
+* Focus on the first 30–60 days post-signup.
 
+### 2️⃣ Strengthen Retention for Basic Plans
 
+* Introduce feature gating, upgrade nudges, or usage-based incentives.
+* Evaluate pricing and perceived value of Basic plans.
 
-\### accounts.csv
+### 3️⃣ Optimize Acquisition Channels
 
-| Column         | Type       | Description                                |
+* Re-evaluate partner and organic acquisition strategies.
+* Focus spend on channels with lower churn probability.
 
-|----------------|------------|--------------------------------------------|
+### 4️⃣ Reduce Support-Driven Churn
 
-| account\_id     | ID         | Unique customer (primary key)              |
+* Identify recurring support issues.
+* Invest in self-serve documentation and product stability.
 
-| account\_name   | string     | Fictional company name                     |
+### 5️⃣ Focus on High-Value Segments
 
-| industry       | categorical| SaaS vertical (e.g., DevTools, EdTech)     |
-
-| country        | string     | ISO-2 country code                         |
-
-| signup\_date    | date       | Account creation date                      |
-
-| referral\_source| categorical| organic, ads, event, partner, other        |
-
-| plan\_tier      | categorical| Initial plan (Basic, Pro, Enterprise)      |
-
-| seats          | integer    | Licensed user count                        |
-
-| is\_trial       | boolean    | Currently trialing                         |
-
-| churn\_flag     | boolean    | Churned at any point                       |
-
-
-
-\### subscriptions.csv
-
-| Column           | Type       | Description                            |
-
-|------------------|------------|----------------------------------------|
-
-| subscription\_id  | ID         | Unique subscription (primary key)      |
-
-| account\_id       | ID (FK)    | Links to accounts.account\_id           |
-
-| start\_date       | date       | Subscription start                     |
-
-| end\_date         | date       | Nullable for active plans              |
-
-| plan\_tier        | categorical| Plan at time of billing                |
-
-| seats            | integer    | Licensed seats                         |
-
-| mrr\_amount       | currency   | Monthly revenue                        |
-
-| arr\_amount       | currency   | Annual revenue                         |
-
-| is\_trial         | boolean    | Trial status                           |
-
-| upgrade\_flag     | boolean    | Plan upgraded mid-cycle                |
-
-| downgrade\_flag   | boolean    | Plan downgraded mid-cycle              |
-
-| churn\_flag       | boolean    | True if ended                          |
-
-| billing\_frequency| categorical| monthly or annual                      |
-
-| auto\_renew\_flag  | boolean    | 80% true                               |
-
-
-
-\### feature\_usage.csv
-
-| Column           | Type       | Description                            |
-
-|------------------|------------|----------------------------------------|
-
-| usage\_id         | ID         | Unique usage event                     |
-
-| subscription\_id  | ID (FK)    | Links to subscriptions.subscription\_id |
-
-| usage\_date       | date       | Date of usage                          |
-
-| feature\_name     | categorical| From pool of 40 SaaS features          |
-
-| usage\_count      | integer    | Event frequency                        |
-
-| usage\_duration\_secs | integer | Time spent                             |
-
-| error\_count      | integer    | Logged errors                          |
-
-| is\_beta\_feature  | boolean    | 10% flagged as beta                    |
-
-
-
-\### support\_tickets.csv
-
-| Column                  | Type       | Description                          |
-
-|-------------------------|------------|--------------------------------------|
-
-| ticket\_id               | ID         | Unique ticket                        |
-
-| account\_id              | ID (FK)    | Links to accounts.account\_id         |
-
-| submitted\_at            | datetime   | Time opened                          |
-
-| closed\_at               | datetime   | Time resolved                        |
-
-| resolution\_time\_hours   | float      | Duration                             |
-
-| priority                | categorical| low, medium, high, urgent            |
-
-| first\_response\_time\_minutes | integer| Minutes to first response            |
-
-| satisfaction\_score      | integer    | 1–5 (null = no response)             |
-
-| escalation\_flag         | boolean    | True if escalated                    |
-
-
-
-\### churn\_events.csv
-
-| Column              | Type       | Description                           |
-
-|---------------------|------------|---------------------------------------|
-
-| churn\_event\_id      | ID         | Unique churn instance                 |
-
-| account\_id          | ID (FK)    | Links to accounts.account\_id          |
-
-| churn\_date          | date       | When account left                     |
-
-| reason\_code         | categorical| pricing, support, features, etc.      |
-
-| refund\_amount\_usd   | currency   | $0 default, 25% have credit/refund    |
-
-| preceding\_upgrade\_flag| boolean | Had upgrade within 90 days             |
-
-| preceding\_downgrade\_flag| boolean| Had downgrade within 90 days          |
-
-| is\_reactivation     | boolean    | 10% were previously churned           |
-
-| feedback\_text       | string     | Optional customer comment             |
-
-
+* Prioritize Enterprise and Power Users for retention and expansion.
+* Use segmentation insights for personalized outreach.
 
 ---
 
+## Assumptions & Caveats
 
-
-\## Suggested Projects
-
-
-
-\- Churn prediction using subscriptions + support data
-
-\- Feature adoption tracking during beta phases
-
-\- Support workload forecasting
-
-\- Revenue cohort analysis by referral channel
-
-\- Plan tier upgrade funnel by industry
-
-\- Latency analysis by seat count and plan tier
-
-
+* All data is **synthetic** and generated for analytical purposes.
+* Revenue, churn, and usage metrics are simulated and not real transactions.
+* Insights are **directional**, intended to demonstrate analytical thinking rather than real-world performance.
+* The project focuses on methodology, modeling, and storytelling.
 
 ---
 
+## Tools & Technologies Used
 
+* Python (Pandas, NumPy, Scikit-learn)
+* Logistic Regression & K-Means Clustering
+* Data Visualization (Tableau / Matplotlib / Plotly)
+* Jupyter Notebook
 
-\## Licensing
-
-
-
-This dataset is fully synthetic and distributed under a permissive MIT-like license.  
-
-You may use or remix it for learning, research, or portfolio purposes, but \*\*you must credit the dataset author: River @ Rivalytics.\*\*
-
-
-
-
+---
+Just tell me 💙
 
