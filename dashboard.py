@@ -178,33 +178,33 @@ with row2_col2:
         pivot["Churn Rate (%)"] = (pivot[True] / pivot["Total"]) * 100
         return pivot[["Churn Rate (%)"]].sort_values("Churn Rate (%)", ascending=False)
 
-    tab1, tab2, tab3 = st.tabs(["Referral", "Plan Tier", "Country"])
+    tab1, tab2, tab3 = st.tabs(["Referral", "Industry", "Country"])
     
     with tab1:
         st.dataframe(get_churn_prob("referral_source").style.format("{:.1f}%"), use_container_width=True)
     with tab2:
-        # Use 'plan_tier' which comes from subscription data
-        st.dataframe(get_churn_prob("plan_tier").style.format("{:.1f}%"), use_container_width=True) 
+        # Use 'industry' based on user request
+        st.dataframe(get_churn_prob("industry").style.format("{:.1f}%"), use_container_width=True) 
     with tab3:
         st.dataframe(get_churn_prob("country").style.format("{:.1f}%"), use_container_width=True)
 
-# --- RIGHT: Churn Reason (Horizontal, Gray) ---
+# --- RIGHT: Churn Trend by Reason ---
 with row2_col3:
-    st.markdown("##### Reasons for Churn")
-    churn_reasons = df_churn["reason_code"].value_counts().reset_index()
-    churn_reasons.columns = ["Reason", "Count"] 
+    st.markdown("##### Churn Trend by Reason")
+    # Combine Pricing and Budget
+    df_churn["reason_group"] = df_churn["reason_code"].replace({"pricing": "Pricing/Budget", "budget": "Pricing/Budget"})
+    monthly_churn_reason = df_churn.groupby([pd.Grouper(key="churn_date", freq="M"), "reason_group"]).size().reset_index(name="churn_count")
     
-    # Horizontal, Gray color, No legend
-    fig_reasons = px.bar(
-        churn_reasons, 
-        x="Count", 
-        y="Reason", 
-        orientation='h',
-        color_discrete_sequence=['#999999']
+    fig_churn_reason = px.line(
+        monthly_churn_reason, 
+        x="churn_date", 
+        y="churn_count", 
+        color="reason_group",
+        markers=True,
+        labels={"churn_date": "Date", "churn_count": "Count", "reason_group": "Reason"}
     )
-    # Sort with largest at bottom (standard 'ascending' for horizontal y-axis categories)
-    fig_reasons.update_layout(yaxis={'categoryorder':'total ascending'}, height=300, margin=dict(l=0, r=0, t=10, b=0), showlegend=False)
-    st.plotly_chart(fig_reasons, use_container_width=True)
+    fig_churn_reason.update_layout(height=300, margin=dict(l=0, r=0, t=10, b=0), showlegend=True)
+    st.plotly_chart(fig_churn_reason, use_container_width=True)
 
 st.markdown("---")
 
