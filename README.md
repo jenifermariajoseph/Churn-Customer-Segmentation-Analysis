@@ -17,13 +17,7 @@ The objective of the analysis is to understand:
 
 The dataset used in this project is **fully synthetic but statistically realistic**, generated to simulate real-world SaaS business behavior. It captures the complete customer lifecycle, including signups, subscriptions, feature usage, support interactions, upgrades/downgrades, and churn events.
 
-SaaS businesses typically struggle with:
-
-* identifying churn drivers early,
-* evaluating acquisition channel quality,
-* balancing growth with sustainable unit economics.
-
-This project demonstrates how data analytics can address these challenges using **structured analysis and predictive modeling**.
+the dashboard is at : https://jenifermariajoseph-churn-customer-segmentation-dashboard-donbvu.streamlit.app/
 
 ---
 
@@ -202,6 +196,7 @@ Segment distribution varies significantly by country, industry, and plan tier.
 * Jupyter Notebook
 
 ---
+
 
 
 
