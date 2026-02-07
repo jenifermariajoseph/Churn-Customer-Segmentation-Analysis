@@ -202,5 +202,6 @@ Segment distribution varies significantly by country, industry, and plan tier.
 * Jupyter Notebook
 
 ---
-Just tell me 💙
+
+
 
